@@ -46,8 +46,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,41 +57,59 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Container(
-          constraints: BoxConstraints.expand(),
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage("assets/background.jpg"),
-                  fit: BoxFit.cover)
-          ),
-        child:Column(
+        constraints: BoxConstraints.expand(),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/background.jpg"), fit: BoxFit.cover)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            RaisedButton(
-
-            onPressed: () {},
-             child: Text("I'M STUDENT",
-             style: TextStyle(fontSize: 30),
-               )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: RaisedButton(
+                    padding: EdgeInsets.all(30),
+                    onPressed: () {},
+                    child: Text(
+                      "I'M STUDENT",
+                      style: TextStyle(fontSize: 30),
+                    )),
+              ),
             ),
-            RaisedButton(
-
-                onPressed: () {},
-                child: Text("I'M TEACHER",
-                  style: TextStyle(fontSize: 30),
-                )
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: RaisedButton(             
+                    padding: EdgeInsets.all(30),
+                    onPressed: () {},
+                    child: Text(
+                      "I'M TEACHER",
+                      style: TextStyle(fontSize: 30),
+                    )),
+              ),
             ),
-            RaisedButton(
-
-                onPressed: () {},
-                child: Text("I'M ADMIN",
-                  style: TextStyle(fontSize: 30),
-                )
+            // ignore: deprecated_member_use
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: RaisedButton(
+                    padding: EdgeInsets.all(30),
+                    onPressed: () {},
+                    child: Text(
+                      "I'M ADMIN",
+                      style: TextStyle(fontSize: 30),
+                    )),
+              ),
             ),
           ],
         ),
       ),
 
-
-  // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
