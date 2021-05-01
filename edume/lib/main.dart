@@ -1,4 +1,6 @@
+import 'package:edume/ui/pages/student_signup/student_signup.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Home'),
+      home: MyHomePage(title: 'Edume'),
     );
   }
 }
@@ -48,11 +50,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    var deviceType = getDeviceType(MediaQuery.of(context).size);
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: Size.fromHeight(75.0),
         child: AppBar(
-          title: Text(widget.title),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/logo1.png',
+                fit: BoxFit.contain,
+                height: 40,
+                width: 50,
+              ),
+              Container(
+                  padding: const EdgeInsets.all(8.0), child: Text('Edume'))
+            ],
+
+          ),
           backgroundColor: Colors.black,
         ),
       ),
@@ -60,7 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/background.jpg"), fit: BoxFit.cover)),
+                image: AssetImage("assets/background.jpg"),
+                fit: deviceType == DeviceScreenType.desktop? BoxFit.fill : BoxFit.cover)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +115,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 borderRadius: BorderRadius.circular(40),
                 child: RaisedButton(
                     padding: EdgeInsets.all(30),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => StudentSignUp()),
+                      );
+                    },
                     child: Text(
                       "I'M ADMIN",
                       style: TextStyle(fontSize: 30),
