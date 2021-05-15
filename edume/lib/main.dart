@@ -1,5 +1,7 @@
 import 'package:edume/ui/pages/student_signup/student_signup.dart';
 import 'package:flutter/material.dart';
+import 'package:edume/ui/pages/student_main/student_main.dart';
+import 'package:edume/ui/pages/student_signup/Admin.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 void main() {
@@ -59,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/logo1.png',
+                'assets/logo9.png',
                 fit: BoxFit.contain,
                 height: 40,
                 width: 50,
@@ -67,7 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                   padding: const EdgeInsets.all(8.0), child: Text('Edume'))
             ],
-
           ),
           backgroundColor: Colors.black,
         ),
@@ -76,8 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/background.jpg"),
-                fit: deviceType == DeviceScreenType.desktop? BoxFit.fill : BoxFit.cover)),
+                image: AssetImage("assets/background1.jpg"),
+                fit: deviceType == DeviceScreenType.desktop
+                    ? BoxFit.fill
+                    : BoxFit.cover)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 borderRadius: BorderRadius.circular(40),
                 child: RaisedButton(
                     padding: EdgeInsets.all(30),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => student_main()),
+                      );
+                    },
                     child: Text(
                       "I'M STUDENT",
                       style: TextStyle(fontSize: 30),
@@ -99,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(12.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
-                child: RaisedButton(             
+                child: RaisedButton(
                     padding: EdgeInsets.all(30),
                     onPressed: () {},
                     child: Text(
@@ -118,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => StudentSignUp()),
+                        MaterialPageRoute(builder: (context) => Admin()),
                       );
                     },
                     child: Text(
