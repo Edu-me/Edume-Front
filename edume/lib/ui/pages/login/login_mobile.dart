@@ -166,7 +166,7 @@ class _Login_MobileState extends State<Login_Mobile> {
                                           this.role == "admin"?shPr.setString("phone", null): shPr.setString("phone", user["phoneNumber"]);
                                           Navigator.push(
                                             context,
-                                            MaterialPageRoute(builder: (context) => Home()),
+                                            MaterialPageRoute(builder: (context) => Home(this.role)),
                                           );
                                         }else{
                                           Validate.showAlertDialog(context, "User Not Found \n please make sure you're registered, you verified your email  or try again \n Thank you!");

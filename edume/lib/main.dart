@@ -2,14 +2,16 @@ import 'package:edume/ui/pages/home_screen/home.dart';
 import 'package:edume/ui/pages/login/login_desktop.dart';
 import 'package:edume/ui/pages/login/login_mobile.dart';
 import 'package:flutter/material.dart';
+import 'package:edume/ui/pages/student_main/student_main.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var id = prefs.getString('token');
-  runApp(MyApp(id == null ? MyHomePage(title: 'Edume') : Home()));
+  runApp(MyApp(id == null ? MyHomePage(title: 'Edume') : Home(prefs.getString('role'))));
 }
 
 class MyApp extends StatelessWidget {
@@ -50,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image.asset(
-                'assets/logo1.png',
+                'assets/logo9.png',
                 fit: BoxFit.contain,
                 height: 40,
                 width: 50,
@@ -58,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                   padding: const EdgeInsets.all(8.0), child: Text('Edume'))
             ],
-
           ),
           backgroundColor: Colors.black,
         ),
@@ -68,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/background.jpg"),
-                fit: deviceType == DeviceScreenType.desktop? BoxFit.fill : BoxFit.cover)),
+                fit: deviceType == DeviceScreenType.desktop
+                    ? BoxFit.fill
+                    : BoxFit.cover)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

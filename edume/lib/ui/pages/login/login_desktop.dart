@@ -200,10 +200,11 @@ class _Login_DesktopState extends State<Login_Desktop> {
                                         Map<String, dynamic> user = jsonDecode(response[0]);
                                         shPr.setString("name", user["name"]);
                                         shPr.setString("token", user["_id"]);
+                                        shPr.setString("role", this.role);
                                         this.role == "admin"?shPr.setString("phone", null): shPr.setString("phone", user["phoneNumber"]);
                                         Navigator.push(
                                           context,
-                                          MaterialPageRoute(builder: (context) => Home()),
+                                          MaterialPageRoute(builder: (context) => Home(this.role)),
                                         );
                                       }else{
                                         Validate.showAlertDialog(context, "User Not Found \n please make sure you're registered, you verified your email or try again \n Thank you!");
