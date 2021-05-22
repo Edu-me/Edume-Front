@@ -22,15 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Edume',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TutorPage(
-        offline: true,
-      ),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Edume',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: SetTutorSelectors(
+          offline: true,
+        ));
   }
 }
 

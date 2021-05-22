@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:edume/widgets/selector_widget.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:edume/constants.dart' as constants;
+import "package:edume/widgets/service_card.dart";
 
 class SetTutorSelectors extends StatefulWidget {
   final bool offline;
@@ -34,20 +33,22 @@ class _SetTutorSelectorsState extends State<SetTutorSelectors> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              // SelectorWidget(
-              //   text: "subject",
-              //   items: subjects,
-              // ),
-              SelectorWidget(
-                text: "level",
-                items: ["All", "primary", "preparatory", "secondary"],
-              ),
-              widget.offline
-                  ? SelectorWidget(
-                      text: "location",
-                      items: constants.locations,
-                    )
-                  : Container()
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      "Primary level ",
+                      style: TextStyle(color: Colors.white, fontSize: 30),
+                    ),
+                  ),
+                  ServiceCard(
+                    offline: widget.offline,
+                    serviceName: "Arabic",
+                    systemLanguage: "arabic",
+                  )
+                ],
+              )
             ],
           ),
         ),
