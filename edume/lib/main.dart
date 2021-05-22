@@ -1,17 +1,19 @@
 import 'package:edume/ui/pages/home_screen/home.dart';
 import 'package:edume/ui/pages/login/login_desktop.dart';
 import 'package:edume/ui/pages/login/login_mobile.dart';
+import 'package:edume/ui/pages/student_tutor/set_tutor_selectors.dart';
+import 'package:edume/ui/pages/student_tutor/tutors_page.dart';
 import 'package:flutter/material.dart';
 import 'package:edume/ui/pages/student_main/student_main.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var id = prefs.getString('token');
-  runApp(MyApp(id == null ? MyHomePage(title: 'Edume') : Home(prefs.getString('role'))));
+  runApp(MyApp(
+      id == null ? MyHomePage(title: 'Edume') : Home(prefs.getString('role'))));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +27,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: home,
+      home: TutorPage(
+        offline: true,
+      ),
     );
   }
 }
@@ -40,7 +44,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
@@ -86,10 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ScreenTypeLayout.builder(
-                          mobile: (BuildContext context) => Login_Mobile('student'),
-                          desktop: (BuildContext context) => Login_Desktop('student'),
-                        )),
+                        MaterialPageRoute(
+                            builder: (context) => ScreenTypeLayout.builder(
+                                  mobile: (BuildContext context) =>
+                                      Login_Mobile('student'),
+                                  desktop: (BuildContext context) =>
+                                      Login_Desktop('student'),
+                                )),
                       );
                     },
                     child: Text(
@@ -108,10 +114,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ScreenTypeLayout.builder(
-                          mobile: (BuildContext context) => Login_Mobile('teacher'),
-                          desktop: (BuildContext context) => Login_Desktop('teacher'),
-                        )),
+                        MaterialPageRoute(
+                            builder: (context) => ScreenTypeLayout.builder(
+                                  mobile: (BuildContext context) =>
+                                      Login_Mobile('teacher'),
+                                  desktop: (BuildContext context) =>
+                                      Login_Desktop('teacher'),
+                                )),
                       );
                     },
                     child: Text(
@@ -131,10 +140,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ScreenTypeLayout.builder(
-                          mobile: (BuildContext context) => Login_Mobile('admin'),
-                          desktop: (BuildContext context) => Login_Desktop('admin'),
-                        )),
+                        MaterialPageRoute(
+                            builder: (context) => ScreenTypeLayout.builder(
+                                  mobile: (BuildContext context) =>
+                                      Login_Mobile('admin'),
+                                  desktop: (BuildContext context) =>
+                                      Login_Desktop('admin'),
+                                )),
                       );
                     },
                     child: Text(
