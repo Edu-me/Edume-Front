@@ -201,7 +201,7 @@ class _Login_DesktopState extends State<Login_Desktop> {
                                         shPr.setString("name", user["name"]);
                                         shPr.setString("token", user["_id"]);
                                         shPr.setString("role", this.role);
-                                        this.role == "admin"?shPr.setString("phone", null): shPr.setString("phone", user["phoneNumber"]);
+                                        this.role == "admin"?shPr.setString("phone", ""): shPr.setString("phone", user["phoneNumber"]);
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(builder: (context) => Home(this.role)),
