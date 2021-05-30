@@ -27,9 +27,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: SetTutorSelectors(
-          offline: true,
-        ));
+        home: home);
+
   }
 }
 

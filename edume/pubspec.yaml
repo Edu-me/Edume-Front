@@ -26,7 +26,6 @@ dependencies:
   responsive_builder:
   http: ^0.12.2
   shared_preferences: ^2.0.5
-  device_preview: any
 
 
 
