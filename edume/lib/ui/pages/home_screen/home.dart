@@ -2,6 +2,7 @@ import 'package:edume/ui/pages/student_main/student_main.dart';
 import 'package:flutter/material.dart';
 
 import '../Admin.dart';
+import 'tutor_main.dart';
 class Home extends StatelessWidget {
   final role;
   Home(this.role);
@@ -9,8 +10,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     if(role == 'student'){
       return new student_main();
-    }else if(role =='teacher'){
-      return new student_main();
+    }else if(role =='tutor'){
+      return new tutor_main();
     }else {
       return new Admin();
     }
