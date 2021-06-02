@@ -10,9 +10,6 @@ ServiceController serviceController = Get.put(ServiceController());
 class student_main extends StatelessWidget {
   List<ServiceCard> servicesCards = [];
   Future<List<ServiceCard>> getServices(bool offline) async {
-    // List<ServiceCard> pri_services = [];
-    // List<ServiceCard> pre_services = [];
-    // List<ServiceCard> sec_services = [];
     List<Service> services = await serviceController.getServices();
 
     for (int i = 0; i < services.length; i++) {
@@ -24,25 +21,6 @@ class student_main extends StatelessWidget {
           systemLanguage: (services)[i].systemLanguage.language);
       servicesCards.add(serviceCard);
     }
-    // for (int i = 0; i < services[1].length; i++) {
-    //   ServiceCard serviceCard = new ServiceCard(
-    //       offline: offline,
-    //       id: (services[1])[i].id,
-    //       serviceName: (services[1])[i].subject.subject,
-    //       systemLanguage: (services[1])[i].systemLanguage.language);
-    //   pre_services.add(serviceCard);
-    // }
-    // for (int i = 0; i < services[2].length; i++) {
-    //   ServiceCard serviceCard = new ServiceCard(
-    //       offline: offline,
-    //       id: (services[2])[i].id,
-    //       serviceName: (services[2])[i].subject.subject,
-    //       systemLanguage: (services[2])[i].systemLanguage.language);
-    //   sec_services.add(serviceCard);
-    // }
-    // servicesCards.add(pri_services);
-    // servicesCards.add(pre_services);
-    // servicesCards.add(sec_services);
     return servicesCards;
   }
 
@@ -99,7 +77,6 @@ class student_main extends StatelessWidget {
                       color: Colors.transparent,
                       onPressed: () async {
                         List<ServiceCard> services = await getServices(true);
-                        print("request sent -------------------");
                         Get.to(SetTutorSelectors(
                           offline: true,
                           all_services: services,
