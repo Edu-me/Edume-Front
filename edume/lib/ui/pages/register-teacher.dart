@@ -3,6 +3,9 @@ import 'package:edume/shared/validate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+
+import 'login/login_desktop.dart';
+import 'login/login_mobile.dart';
 class Register_Tutor extends StatefulWidget {
   @override
   _Register_TutorState createState() => _Register_TutorState();
@@ -597,7 +600,14 @@ class _Register_TutorState extends State<Register_Tutor> {
               title: Text('LogOut'),
               onTap: () {
                 Navigator.pop(context);
-                // ...
+                Auth.logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScreenTypeLayout.builder(
+                    mobile: (BuildContext context) => Login_Mobile('admin'),
+                    desktop: (BuildContext context) => Login_Desktop('admin'),
+                  )),
+                );                // ...
               },
             ),
           ],

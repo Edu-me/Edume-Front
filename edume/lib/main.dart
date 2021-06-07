@@ -113,9 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         MaterialPageRoute(
                             builder: (context) => ScreenTypeLayout.builder(
                                   mobile: (BuildContext context) =>
-                                      Login_Mobile('teacher'),
+                                      Login_Mobile('tutor'),
                                   desktop: (BuildContext context) =>
-                                      Login_Desktop('teacher'),
+                                      Login_Desktop('tutor'),
                                 )),
                       );
                     },

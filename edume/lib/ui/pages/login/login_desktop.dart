@@ -39,7 +39,7 @@ class _Login_DesktopState extends State<Login_Desktop> {
         textmsg = "Ready to continue learning?";
       });
     }
-    else if(role=='teacher'){
+    else if(role=='tutor'){
       setState(() {
         textmsg = "Ready to continue tutoring?";
 
@@ -199,7 +199,8 @@ class _Login_DesktopState extends State<Login_Desktop> {
                                         shPr.setString("password", password);
                                         Map<String, dynamic> user = jsonDecode(response[0]);
                                         shPr.setString("name", user["name"]);
-                                        shPr.setString("token", user["_id"]);
+                                        shPr.setString("id", user["_id"]);
+                                        shPr.setString("token", user["token"]);
                                         shPr.setString("role", this.role);
                                         this.role == "admin"?shPr.setString("phone", ""): shPr.setString("phone", user["phoneNumber"]);
                                         Navigator.push(
