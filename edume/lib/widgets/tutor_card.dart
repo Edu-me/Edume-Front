@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 class TutorCard extends StatelessWidget {
   final bool offline;
   final String tutorName;
-  final String email;
   final String phoneNumber;
-  final List<String> availableDays;
+  final String nationality;
   final List<String> locations;
-  final double rating;
+  final int rating;
   final String id;
   TutorCard(
       {this.offline,
-      this.availableDays,
-      this.email,
+      this.nationality,
       this.phoneNumber,
       this.tutorName,
       this.id,
@@ -20,11 +18,6 @@ class TutorCard extends StatelessWidget {
       this.rating});
   @override
   Widget build(BuildContext context) {
-    String days = availableDays[0];
-
-    for (int i = 1; i < availableDays.length; i++) {
-      days += ", " + availableDays[i];
-    }
     String tutorLocations;
     if (offline) {
       tutorLocations = locations[0];
@@ -58,13 +51,6 @@ class TutorCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    email,
-                    style: TextStyle(color: Colors.black, fontSize: 15),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
                     phoneNumber,
                     style: TextStyle(color: Colors.black, fontSize: 15),
                   ),
@@ -72,7 +58,7 @@ class TutorCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    days,
+                    nationality,
                     style: TextStyle(color: Colors.black, fontSize: 15),
                   ),
                   SizedBox(

@@ -1,10 +1,9 @@
 import 'package:edume/ui/pages/home_screen/home.dart';
+import 'package:edume/ui/pages/home_screen/student_main.dart';
 import 'package:edume/ui/pages/login/login_desktop.dart';
 import 'package:edume/ui/pages/login/login_mobile.dart';
-import 'package:edume/ui/pages/student_tutor/set_tutor_selectors.dart';
-import 'package:edume/ui/pages/student_tutor/tutors_page.dart';
 import 'package:flutter/material.dart';
-import 'package:edume/ui/pages/student_main/student_main.dart';
+import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,14 +20,13 @@ class MyApp extends StatelessWidget {
   MyApp(this.home);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Edume',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: home);
-
+        home: student_main());
   }
 }
 
