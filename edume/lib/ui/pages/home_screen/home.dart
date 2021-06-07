@@ -11,11 +11,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     if (role == 'student') {
       return new student_main();
-    }else if(role =='tutor'){
+    } else if (role == 'tutor') {
       return new tutor_main();
-    }else {
-    } else if (role == 'teacher') {
-      return new student_main();
     } else {
       return new Admin();
     }
