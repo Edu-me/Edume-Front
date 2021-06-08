@@ -2,11 +2,12 @@ import 'package:edume/shared/auth.dart';
 import 'package:edume/shared/validate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-
 import 'Admin.dart';
 import 'login/login_desktop.dart';
 import 'login/login_mobile.dart';
+
 class Register_Tutor extends StatefulWidget {
   @override
   _Register_TutorState createState() => _Register_TutorState();
@@ -39,7 +40,7 @@ class _Register_TutorState extends State<Register_Tutor> {
 
   String passwordErrorMsg = "";
   String dropdownValue = 'Egyptian';
-
+  bool showReload = false;
 
 
   @override
@@ -71,7 +72,13 @@ class _Register_TutorState extends State<Register_Tutor> {
 
 
       ///////////////////
-      body: Container(
+      body: Builder(
+        builder: (context) {
+       return ModalProgressHUD(
+        inAsyncCall: showReload,
+        opacity: 0,
+        progressIndicator: CircularProgressIndicator(),
+        child: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -320,7 +327,6 @@ class _Register_TutorState extends State<Register_Tutor> {
                                   'Argentine',
                                   'Austrian',
                                   'Australian',
-                                  'Australian',
                                   'Bangladeshi',
                                   'Belarusian',
                                   'Belgian',
@@ -491,9 +497,15 @@ class _Register_TutorState extends State<Register_Tutor> {
                                       String confirm =
                                           passwordController.text;
                                       String phone = phoneController.text;
+                                      setState(() {
+                                        showReload = true;
+                                      });
                                       List<String> response =
                                       await Auth.Tutor_Signup(email,
                                           password, name, phone, confirm, dropdownValue);
+                                      setState(() {
+                                        showReload = false;
+                                      });
                                       if (response[1] == "200") {
                                         nameController.text = "";
                                         emailController.text = "";
@@ -541,6 +553,9 @@ class _Register_TutorState extends State<Register_Tutor> {
             ),
           ),
         ),
+      ),
+       );
+        },/////////////////
       ),
 
       drawer: Drawer(
@@ -596,7 +611,6 @@ class _Register_TutorState extends State<Register_Tutor> {
             ),
           ],
         ),
-
       ),
     );
   }

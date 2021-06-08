@@ -5,6 +5,7 @@ import 'package:edume/shared/validate.dart';
 import 'package:edume/ui/pages/login/login_desktop.dart';
 import 'package:edume/ui/pages/login/login_mobile.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,12 +32,18 @@ class _StudentSignUpDesktopState extends State<StudentSignUpDesktop> {
   String phoneErrorMsg = "";
   String passwordErrorMsg = "";
   String passwordConfrimErrorMsg = "";
-
+  bool showReload = false;
   @override
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
     return new Scaffold(
-      body: Container(
+      body: Builder(
+        builder: (context) {
+      return ModalProgressHUD(
+        inAsyncCall: showReload,
+        opacity: 0,
+        progressIndicator: CircularProgressIndicator(),
+        child: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -400,9 +407,15 @@ class _StudentSignUpDesktopState extends State<StudentSignUpDesktop> {
                                       String confirm =
                                           passwordConfirmController.text;
                                       String phone = phoneController.text;
+                                      setState(() {
+                                        showReload = true;
+                                      });
                                       List<String> response =
                                           await Auth.Student_signUp(email,
                                               password, name, phone, confirm);
+                                      setState(() {
+                                        showReload = false;
+                                      });
                                       if (response[1] == "200") {
                                         final snackBar = SnackBar(
                                           duration:  const Duration(milliseconds: 20000),
@@ -452,6 +465,9 @@ class _StudentSignUpDesktopState extends State<StudentSignUpDesktop> {
           ),
         ),
       ),
+      );
+        },/////////////////
+      )
     );
   }
 }

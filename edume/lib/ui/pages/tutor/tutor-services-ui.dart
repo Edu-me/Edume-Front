@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Tutor_Services extends StatefulWidget {
@@ -48,6 +49,7 @@ class _Tutor_ServicesState extends State<Tutor_Services> {
       return false;
   }
 
+  bool showReload = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +83,13 @@ class _Tutor_ServicesState extends State<Tutor_Services> {
                       ),
                       color: Colors.orange,
                       onPressed: () async {
+                        setState(() {
+                          showReload = true;
+                        });
                         await GetSystemServices();
+                        setState(() {
+                          showReload = false;
+                        });
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -99,7 +107,13 @@ class _Tutor_ServicesState extends State<Tutor_Services> {
       ),
 
       /////////////////
-      body: Container(
+      body: Builder(
+        builder: (context) {
+       return ModalProgressHUD(
+        inAsyncCall: showReload,
+        opacity: 0,
+        progressIndicator: CircularProgressIndicator(),
+        child: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
@@ -128,7 +142,9 @@ class _Tutor_ServicesState extends State<Tutor_Services> {
           ),
         ),
       ),
-
+       );
+        },/////////////////
+      ),
       /////////////////
     );
   }
@@ -144,9 +160,16 @@ class CustomCard extends StatefulWidget {
 
 class _CustomCardState extends State<CustomCard> {
   String dropdownValue = 'Update';
+  bool showReload = false;
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Builder(
+        builder: (context) {
+      return ModalProgressHUD(
+          inAsyncCall: showReload,
+          opacity: 0,
+          progressIndicator: CircularProgressIndicator(),
+    child: Center(
       child: Card(
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
@@ -210,6 +233,9 @@ class _CustomCardState extends State<CustomCard> {
                       TextButton(
                         child: const Text('Delete'),
                         onPressed: () async {
+                          setState(() {
+                            showReload = true;
+                          });
                           final SharedPreferences shPr =
                               await SharedPreferences.getInstance();
 
@@ -223,6 +249,10 @@ class _CustomCardState extends State<CustomCard> {
                               'x-auth-token': shPr.getString("token"),
                             },
                           );
+
+                          setState(() {
+                            showReload = false;
+                          });
                           if (response.statusCode == 200) {
                             final snackBar = SnackBar(
                               duration: const Duration(milliseconds: 20000),
@@ -320,11 +350,12 @@ class _CustomCardState extends State<CustomCard> {
           ),
         ),
       ),
+    ),
+      );
+        },/////////////////
     );
   }
 }
-
-//////////////////////////showalert dialogue
 
 //////////////////////Show alert dialogue
 Future<void> showUpdateAvailDialog(BuildContext context, String id) async {
