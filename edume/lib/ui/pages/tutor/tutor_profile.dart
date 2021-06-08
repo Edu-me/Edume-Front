@@ -82,94 +82,98 @@ class tutor_profile extends StatelessWidget {
                     height: (MediaQuery.of(context).size.height),
                     color: Colors.black.withOpacity(0.7),
                     padding: EdgeInsets.fromLTRB(15, 20, 15, 20),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            //SizedBox(width: 20.0, height: 40.0),
-                            Row(
-                              /////////////////////////////
-                              children: [
-                                Text(
-                                  'Name :  ',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20.0, height: 40.0),
-                            Row(
-                              /////////////////////////////
-                              children: [
-                                Text(
-                                  'Email :  ',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20.0, height: 40.0),
-                            Row(
-                              /////////////////////////////
-                              children: [
-                                Text(
-                                  'Phone number :  ',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20.0, height: 40.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'Nationality :  ',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20.0, height: 40.0),
-                            Row(
-                              children: [
-                                Text(
-                                  'About :  ',
-                                  style: TextStyle(
-                                      fontSize: 20, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20.0, height: 60.0),
-                            Row(
-                              children: [
-                               SizedBox(width: 120.0, height: 60.0),
-                                Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Image.asset(
-                                        'assets/edit.png',
-                                        width: 100.0,
-                                        height: 100.0,
-                                      ),
-                                    ),
-                                    SizedBox(width: 20.0, height: 20.0),
-                                    InkWell(
-                                      onTap: () {},
-                                      child: Text(
-                                        'Edit Profile ',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.lightBlue),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
+                    child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(2.0),
+                        child: Image.asset(
+                          'assets/prof.png',
+                          height: 100.0,
+                          width: 100.0,
                         ),
-                      ],
+                      ),
+                      //SizedBox(width: 20.0, height: 40.0),
+                      Row(
+                        /////////////////////////////
+                        children: [
+                          Text(
+                            'Name :  ',
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20.0, height: 40.0),
+                      Row(
+                        /////////////////////////////
+                        children: [
+                          Text(
+                            'Email :  ',
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20.0, height: 40.0),
+                      Row(
+                        /////////////////////////////
+                        children: [
+                          Text(
+                            'Phone number :  ',
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20.0, height: 40.0),
+                      Row(
+                        children: [
+                          Text(
+                            'Nationality :  ',
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20.0, height: 40.0),
+                      Row(
+                        children: [
+                          Text(
+                            'About :  ',
+                            style: TextStyle(
+                                fontSize: 20, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 20.0, height: 60.0),
+                      Row(
+                        children: [
+                         SizedBox(width: 350.0, height: 60.0),
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () {},
+                                child: Image.asset(
+                                  'assets/edit.png',
+                                  width: 100.0,
+                                  height: 100.0,
+                                ),
+                              ),
+                              SizedBox(width: 20.0, height: 20.0),
+                              InkWell(
+                                onTap: () {},
+                                child: Text(
+                                  'Edit Profile ',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.lightBlue),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                     ),
                   ),
                 ),
