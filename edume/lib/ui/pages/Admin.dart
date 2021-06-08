@@ -1,13 +1,61 @@
+import 'dart:convert';
+
+import 'package:edume/shared/admin-tutor.dart';
 import 'package:edume/shared/auth.dart';
 import 'package:edume/ui/pages/register-teacher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'admin-view-tutors.dart';
 import 'login/login_desktop.dart';
 import 'login/login_mobile.dart';
-class Admin extends StatelessWidget {
+class Admin extends StatefulWidget {
 
+  @override
+  _AdminState createState() => _AdminState();
+}
+
+class _AdminState extends State<Admin> {
+  List<Admin_Tutor> systemtutors = [];
+  Future<bool> GetSystemTutors() async {
+
+    final String apiUrl = "http://localhost:3000/Edume/v1/admin/getTutors";
+    final SharedPreferences shPr =
+    await SharedPreferences.getInstance();
+    final response = await http.get(apiUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': shPr.getString("token"),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      for (int i = 0; i < (jsonDecode(response.body)).length; i++) {
+        print((jsonDecode(response.body))[i]);
+        Admin_Tutor tutor = new Admin_Tutor();
+        tutor.sId = ((jsonDecode(response.body))[i])["_id"];
+        tutor.about = ((jsonDecode(response.body))[i])["about"];
+        tutor.email = ((jsonDecode(response.body))[i])["email"];
+        tutor.name = ((jsonDecode(response.body))[i])["name"];
+        tutor.phoneNumber = ((jsonDecode(response.body))[i])["phoneNumber"];
+        tutor.nationality = ((jsonDecode(response.body))[i])["nationality"];
+        List<Availability> available = [];
+        for(int j=0; j<(jsonDecode(response.body))[i]["availability"].length; j++){
+          Availability v = new Availability();
+          v.availabe = (jsonDecode(response.body))[i]["availability"][j]["availabe"];
+          v.sId = (jsonDecode(response.body))[i]["availability"][j]["_id"];
+          v.day = (jsonDecode(response.body))[i]["availability"][j]["day"];
+          available.add(v);
+        }
+        tutor.availability = available;
+        systemtutors.add(tutor);
+      }
+      return true;
+    } else
+      return false;
+  }
   @override
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
@@ -96,11 +144,13 @@ class Admin extends StatelessWidget {
                 backgroundImage: AssetImage("assets/tutor.png"),
               ),
               title: Text('Tutors'),
-              onTap: () {
+              onTap: () async{
+
                 Navigator.pop(context);
+                await GetSystemTutors();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Register_Tutor()),
+                  MaterialPageRoute(builder: (context) => Admin_View_Tutor(systemtutors)),
                 );
               },
             ),
@@ -116,7 +166,7 @@ class Admin extends StatelessWidget {
             ),
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage("assets/logout.jpg"),
+                backgroundImage: AssetImage("assets/logout.png"),
               ),
               title: Text('LogOut'),
               onTap: () {
