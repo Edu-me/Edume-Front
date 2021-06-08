@@ -5,6 +5,7 @@ import 'package:edume/shared/auth.dart';
 import 'package:edume/ui/pages/register-teacher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> {
   List<Admin_Tutor> systemtutors = [];
   Future<bool> GetSystemTutors() async {
-
+    systemtutors = [];
     final String apiUrl = "http://localhost:3000/Edume/v1/admin/getTutors";
     final SharedPreferences shPr =
     await SharedPreferences.getInstance();
@@ -56,6 +57,8 @@ class _AdminState extends State<Admin> {
     } else
       return false;
   }
+
+  bool showReload = false;
   @override
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
@@ -85,7 +88,13 @@ class _AdminState extends State<Admin> {
 
 
         ///////////////////
-        body: Container(
+        body: Builder(
+        builder: (context) {
+          return ModalProgressHUD(
+        inAsyncCall: showReload,
+        opacity: 0,
+        progressIndicator: CircularProgressIndicator(),
+        child: Container(
           constraints: BoxConstraints.expand(),
           decoration: BoxDecoration(
               image: DecorationImage(
@@ -104,6 +113,9 @@ class _AdminState extends State<Admin> {
               ),
             ],
           ),
+        ),
+          );
+        },/////////////////
         ),
 
       drawer: Drawer(
@@ -145,9 +157,14 @@ class _AdminState extends State<Admin> {
               ),
               title: Text('Tutors'),
               onTap: () async{
-
                 Navigator.pop(context);
+                setState(() {
+                  showReload = true;
+                });
                 await GetSystemTutors();
+                setState(() {
+                  showReload = false;
+                });
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Admin_View_Tutor(systemtutors)),
@@ -185,6 +202,7 @@ class _AdminState extends State<Admin> {
         ),
 
       ),
+
     ); //scaffold
   }
 }

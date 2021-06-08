@@ -5,6 +5,7 @@ import 'package:edume/shared/validate.dart';
 import 'package:edume/ui/pages/home_screen/home.dart';
 import 'package:edume/ui/pages/student_signup/student_signup_desktop.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Login_Desktop extends StatefulWidget {
@@ -30,7 +31,7 @@ class _Login_DesktopState extends State<Login_Desktop> {
   String textmsg = "";
   String email="";
   String password="";
-
+  bool showReload = false;
   @override
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
@@ -51,7 +52,13 @@ class _Login_DesktopState extends State<Login_Desktop> {
       });
     }
     return new Scaffold(
-      body: Container(
+      body:  Builder(
+        builder: (context) {
+      return ModalProgressHUD(
+        inAsyncCall: showReload,
+        opacity: 0,
+        progressIndicator: CircularProgressIndicator(),
+        child: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -191,7 +198,13 @@ class _Login_DesktopState extends State<Login_Desktop> {
                                     if(!emailValidate && !passwordValidate){
                                       email = emailController.text;
                                       password = passwordController.text;
+                                      setState(() {
+                                        showReload = true;
+                                      });
                                       List<String> response = await Auth.login(email,password, this.role);
+                                      setState(() {
+                                        showReload = false;
+                                      });
                                       if(response[1]=="200"){
 
                                         final SharedPreferences shPr = await SharedPreferences.getInstance();
@@ -250,6 +263,9 @@ class _Login_DesktopState extends State<Login_Desktop> {
           ),
         ),
       ),
+      );
+      },
+      )
     );
   }
 }
