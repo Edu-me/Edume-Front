@@ -1,6 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:edume/controllers/student_tutor/services_controller.dart';
+import 'package:edume/models/student_tutor/service_model.dart';
+import 'package:edume/ui/pages/student_tutor/set_tutor_selectors.dart';
+import 'package:edume/widgets/service_card.dart';
+import 'package:get/get.dart';
+
+ServiceController serviceController = Get.put(ServiceController());
 
 class student_main extends StatelessWidget {
+  List<ServiceCard> servicesCards = [];
+  Future<List<ServiceCard>> getServices(bool offline) async {
+    List<Service> services = await serviceController.getServices();
+
+    for (int i = 0; i < services.length; i++) {
+      ServiceCard serviceCard = new ServiceCard(
+          offline: offline,
+          id: (services)[i].id,
+          serviceName: (services)[i].subject.subject,
+          level: services[i].level.level,
+          systemLanguage: (services)[i].systemLanguage.language);
+      servicesCards.add(serviceCard);
+    }
+    return servicesCards;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +52,7 @@ class student_main extends StatelessWidget {
         height: double.infinity,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/background.jpg"),
-                fit: BoxFit.cover)),
+                image: AssetImage("assets/background.jpg"), fit: BoxFit.cover)),
         child: Row(
           children: [
             SizedBox(width: 200.0, height: 100.0),
@@ -53,7 +75,13 @@ class student_main extends StatelessWidget {
                         height: 80,
                       ),
                       color: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () async {
+                        List<ServiceCard> services = await getServices(true);
+                        Get.to(SetTutorSelectors(
+                          offline: true,
+                          all_services: services,
+                        ));
+                      },
                       label: Text("Tutors",
                           style:
                               TextStyle(color: Colors.white, fontSize: 30.0)),
@@ -72,7 +100,13 @@ class student_main extends StatelessWidget {
                           height: 80,
                         ),
                         color: Colors.transparent,
-                        onPressed: () {},
+                        onPressed: () async {
+                          List<ServiceCard> services = await getServices(false);
+                          Get.to(SetTutorSelectors(
+                            offline: false,
+                            all_services: services,
+                          ));
+                        },
                         label: Text("Online Tutors",
                             style: TextStyle(
                                 color: Colors.white, fontSize: 30.0))),

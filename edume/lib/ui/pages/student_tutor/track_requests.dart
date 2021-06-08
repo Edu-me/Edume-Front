@@ -1,16 +1,27 @@
+import 'package:edume/models/student_tutor/student_request.dart';
+import 'package:edume/widgets/student_request.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import "package:edume/widgets/service_card.dart";
 
-class SetTutorSelectors extends StatefulWidget {
-  final bool offline;
-  final List<ServiceCard> all_services;
-  SetTutorSelectors({this.offline, this.all_services});
+class TrackRequests extends StatefulWidget {
+  final List<StudentRequest> requests;
+  TrackRequests({this.requests});
   @override
-  _SetTutorSelectorsState createState() => _SetTutorSelectorsState();
+  _TrackRequestsState createState() => _TrackRequestsState();
 }
 
-class _SetTutorSelectorsState extends State<SetTutorSelectors> {
+class _TrackRequestsState extends State<TrackRequests> {
+  List<StudentRequestCard> requests = [];
+  @override
+  void initState() {
+    for (int i = 0; i < widget.requests.length; i++) {
+      StudentRequestCard requestCard = new StudentRequestCard(
+        SR: widget.requests[i],
+      );
+      requests.add(requestCard);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
@@ -27,7 +38,7 @@ class _SetTutorSelectorsState extends State<SetTutorSelectors> {
           padding: const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(children: widget.all_services),
+            child: Column(children: requests),
           ),
         ),
       ),

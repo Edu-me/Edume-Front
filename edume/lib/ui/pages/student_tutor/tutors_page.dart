@@ -6,7 +6,8 @@ import 'package:responsive_builder/responsive_builder.dart';
 class TutorPage extends StatefulWidget {
   final bool offline;
   final List<ServiceTutorsResponse> tutorsList;
-  TutorPage({this.offline, this.tutorsList});
+  final String service_id;
+  TutorPage({this.offline, this.tutorsList, this.service_id});
 
   @override
   _TutorPageState createState() => _TutorPageState();
@@ -25,6 +26,7 @@ class _TutorPageState extends State<TutorPage> {
         phoneNumber: widget.tutorsList[i].tutor.phoneNumber,
         nationality: widget.tutorsList[i].tutor.nationality,
         offline: widget.offline,
+        service_id: widget.service_id,
       );
       tutorsCard.add(tutorCard);
     }
