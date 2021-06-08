@@ -1,6 +1,9 @@
 import 'package:edume/controllers/student_tutor/services_controller.dart';
 import 'package:edume/models/student_tutor/service_model.dart';
+import 'package:edume/models/student_tutor/student_request.dart' as SD;
+import 'package:edume/networking/student_tutor/add_request_services.dart';
 import 'package:edume/ui/pages/student_tutor/set_tutor_selectors.dart';
+import 'package:edume/ui/pages/student_tutor/track_requests.dart';
 import 'package:edume/widgets/service_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -129,6 +132,33 @@ class student_main extends StatelessWidget {
                         label: Text("Webinars",
                             style: TextStyle(
                                 color: Colors.white, fontSize: 30.0))),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: RaisedButton.icon(
+                      elevation: 4.0,
+                      icon: Icon(
+                        Icons.track_changes,
+                        size: 60,
+                        color: Colors.white,
+                      ),
+                      color: Colors.transparent,
+                      onPressed: () async {
+                        RequestServices requestServices = new RequestServices();
+
+                        List<SD.StudentRequest> requests =
+                            await requestServices.getRequests();
+                        Get.to(TrackRequests(
+                          requests: requests,
+                        ));
+                      },
+                      label: Text("Track Requests",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 30.0)),
+                    ),
                   ),
                 ),
               ],

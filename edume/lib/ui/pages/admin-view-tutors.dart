@@ -2,6 +2,7 @@ import 'package:edume/shared/admin-tutor.dart';
 import 'package:edume/shared/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Admin.dart';
@@ -18,6 +19,7 @@ class Admin_View_Tutor extends StatefulWidget {
 
 class _Admin_View_TutorState extends State<Admin_View_Tutor> {
   List<Admin_Tutor> systemtutors = [];
+  bool showReload = false;
   _Admin_View_TutorState(this.systemtutors);
   @override
   Widget build(BuildContext context) {
@@ -42,11 +44,14 @@ class _Admin_View_TutorState extends State<Admin_View_Tutor> {
           backgroundColor: Colors.black,
         ),
       ),
-      /////////////////
 
-
-      ///////////////////
-      body: Container(
+      body: Builder(
+        builder: (context) {
+      return ModalProgressHUD(
+        inAsyncCall: showReload,
+        opacity: 0,
+        progressIndicator: CircularProgressIndicator(),
+        child: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -79,7 +84,9 @@ class _Admin_View_TutorState extends State<Admin_View_Tutor> {
           ),
         ),
       ),
-
+      );
+        },/////////////////
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -137,6 +144,7 @@ class _Admin_View_TutorState extends State<Admin_View_Tutor> {
         ),
 
       ),
+
     ); //scaffold
   }
 }
@@ -152,10 +160,16 @@ class Admin_Tutor_CustomCard extends StatefulWidget {
 
 class _Admin_Tutor_CustomCardState extends State<Admin_Tutor_CustomCard> {
   String dropdownValue = 'Available On';
-
+  bool showReload = false;
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Builder(
+        builder: (context) {
+      return ModalProgressHUD(
+          inAsyncCall: showReload,
+          opacity: 0,
+          progressIndicator: CircularProgressIndicator(),
+    child: Center(
       child: Card(
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
@@ -209,9 +223,13 @@ class _Admin_Tutor_CustomCardState extends State<Admin_Tutor_CustomCard> {
                       TextButton(
                         child: const Text('Remove'),
                         onPressed: () async {
+
                           final SharedPreferences shPr =
                           await SharedPreferences.getInstance();
 
+                          setState(() {
+                            showReload = true;
+                          });
                           final String apiUrl =
                               "http://localhost:3000/Edume/v1/admin/deleteTutor/" +
                                   widget.AT.sId;
@@ -222,6 +240,9 @@ class _Admin_Tutor_CustomCardState extends State<Admin_Tutor_CustomCard> {
                               'x-auth-token': shPr.getString("token"),
                             },
                           );
+                          setState(() {
+                            showReload = false;
+                          });
                           if (response.statusCode == 200) {
                             final snackBar = SnackBar(
                               duration: const Duration(milliseconds: 20000),
@@ -314,6 +335,9 @@ class _Admin_Tutor_CustomCardState extends State<Admin_Tutor_CustomCard> {
           ),
         ),
       ),
+    ),
+      );
+        },/////////////////
     );
   }
 }

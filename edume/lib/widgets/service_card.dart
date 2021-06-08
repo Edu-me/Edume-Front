@@ -32,6 +32,7 @@ class ServiceCard extends StatelessWidget {
         Get.to(TutorPage(
           offline: offline,
           tutorsList: tutors,
+          service_id: id,
         ));
       },
       child: Padding(
