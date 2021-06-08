@@ -6,6 +6,7 @@ import 'package:edume/shared/tutor_request.dart';
 import 'package:edume/ui/pages/login/login_desktop.dart';
 import 'package:edume/ui/pages/login/login_mobile.dart';
 import 'package:edume/ui/pages/tutor/tutor-services-ui.dart';
+import 'package:edume/ui/pages/tutor/tutor_profile.dart';
 import 'package:edume/ui/pages/tutor/tutor_requests.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -204,7 +205,13 @@ class _tutor_mainState extends State<tutor_main> {
                       elevation: 4.0,
                       icon: Icon(Icons.person, size: 100,),
                       color: Colors.orange.withOpacity(0.5),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => tutor_profile()),
+                        );
+                      },
                       label: Text("Profile",
                           style:
                           TextStyle(color: Colors.white, fontSize: 30.0)),
