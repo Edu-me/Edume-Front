@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import 'Admin.dart';
 import 'login/login_desktop.dart';
 import 'login/login_mobile.dart';
 class Register_Tutor extends StatefulWidget {
@@ -426,7 +427,6 @@ class _Register_TutorState extends State<Register_Tutor> {
                               ),
                             ],
                           ),
-                          /////////////Login button/////////////////
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: ClipRRect(
@@ -565,37 +565,21 @@ class _Register_TutorState extends State<Register_Tutor> {
             ),
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage("assets/register.jpg"),
+                backgroundImage: AssetImage("assets/admin.png"),
               ),
-              title: Text('Register a tutor'),
+              title: Text('Home'),
               onTap: () {
-                Navigator.pop(context);
 
-              },
-            ),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage("assets/tutor.png"),
-              ),
-              title: Text('Tutors'),
-              onTap: () {
                 Navigator.pop(context);
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Admin()),
+                );
               },
             ),
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage("assets/students.jpg"),
-              ),
-              title: Text('Students'),
-              onTap: () {
-                Navigator.pop(context);
-                // ...
-              },
-            ),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage("assets/logout.jpg"),
+                backgroundImage: AssetImage("assets/logout.png"),
               ),
               title: Text('LogOut'),
               onTap: () {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 Tutor_Service TutorServiceFromJson(String str) => Tutor_Service.fromJson(json.decode(str));
 class Tutor_Service {
+  String sId;
   bool availability;
   int rating;
   List<String> locations;

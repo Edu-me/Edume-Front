@@ -28,6 +28,9 @@ dependencies:
   get: ^3.24.0
   font_awesome_flutter: ^8.8.1
   shared_preferences: ^2.0.5
+  timelines: ^0.1.0
+  timeline_tile: ^2.0.0
+  modal_progress_hud_nsn: ^0.1.0-nullsafety-1
 
 
 

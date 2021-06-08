@@ -161,7 +161,7 @@ class _Login_DesktopState extends State<Login_Desktop> {
                                   prefixIcon: Padding(
                                     padding:
                                     const EdgeInsets.only(right: 15.0, left: 15, top: 15, bottom: 15),
-                                    child: Icon(Icons.email),
+                                    child: Icon(Icons.security),
                                   ),
                                   //errorStyle: CustomTextStyle.textRegular().copyWith(color: Colors.red));,
                                 ),
