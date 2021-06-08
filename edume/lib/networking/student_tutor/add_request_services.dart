@@ -139,8 +139,9 @@ class RequestServices {
   Future<bool> editRequest(EditRequest requestModel, String requestId) async {
     final SharedPreferences shPr = await SharedPreferences.getInstance();
     String studentToken = shPr.getString("token");
-    Uri url = Uri.parse('http://localhost:3000/Edume/v1/request/$requestId');
-    final response = await http.post(url,
+    Uri url =
+        Uri.parse('http://localhost:3000/Edume/v1/request/details/$requestId');
+    final response = await http.put(url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': studentToken

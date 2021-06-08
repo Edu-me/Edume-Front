@@ -1,5 +1,6 @@
 import 'package:edume/controllers/student_tutor/send_request_controller.dart';
 import 'package:edume/models/student_tutor/add_request.dart';
+import 'package:edume/models/student_tutor/edit_request.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -52,22 +53,23 @@ class _PrepareRequestState extends State<PrepareRequest> {
         studentsNumber = widget.studentsNumber;
         message = widget.message;
         messageController = TextEditingController(text: widget.message);
-      }
-      day = widget.days[0];
-      for (int i = 0; i < widget.days.length; i++) {
-        DropdownMenuItem dayItem = new DropdownMenuItem(
-          child: Text(
-            widget.days[i],
-            style: TextStyle(color: Colors.orange, fontSize: 15),
-          ),
-          onTap: () {
-            setState(() {
-              day = widget.days[i];
-            });
-          },
-          value: widget.days[i],
-        );
-        daysItems.add(dayItem);
+      } else {
+        day = widget.days[0];
+        for (int i = 0; i < widget.days.length; i++) {
+          DropdownMenuItem dayItem = new DropdownMenuItem(
+            child: Text(
+              widget.days[i],
+              style: TextStyle(color: Colors.orange, fontSize: 15),
+            ),
+            onTap: () {
+              setState(() {
+                day = widget.days[i];
+              });
+            },
+            value: widget.days[i],
+          );
+          daysItems.add(dayItem);
+        }
       }
     }
   }
@@ -291,7 +293,17 @@ class _PrepareRequestState extends State<PrepareRequest> {
                                   ),
                                   color: Colors.white,
                                   onPressed: () async {
+                                    SendRequestController
+                                        sendRequestController =
+                                        Get.put(SendRequestController());
                                     if (widget.edit) {
+                                      EditRequest editRequest = new EditRequest(
+                                          day: day,
+                                          sessionDuration: duration.toString(),
+                                          studentsNum:
+                                              studentsNumber.toString());
+                                      await sendRequestController.editRequest(
+                                          editRequest, widget.requestID);
                                     } else {
                                       final SharedPreferences shPr =
                                           await SharedPreferences.getInstance();
@@ -311,9 +323,7 @@ class _PrepareRequestState extends State<PrepareRequest> {
                                                   studentsNumber.toString(),
                                               tutor: widget.tutorId);
                                       //send request
-                                      SendRequestController
-                                          sendRequestController =
-                                          Get.put(SendRequestController());
+
                                       await sendRequestController
                                           .sendRequest(requestInfo);
                                     }
