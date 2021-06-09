@@ -129,6 +129,7 @@ class _tutor_mainState extends State<tutor_main> {
       myinfo.phoneNumber = ((jsonDecode(response.body)))["phoneNumber"];
       myinfo.email = ((jsonDecode(response.body)))["email"];
       myinfo.nationality = ((jsonDecode(response.body)))["nationality"];
+      myinfo.about = ((jsonDecode(response.body)))["about"];
       List<Availability> available = [];
       for(int j=0; j<(jsonDecode(response.body))["availability"].length; j++){
         Availability v = new Availability();

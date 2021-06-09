@@ -14,6 +14,7 @@ class TutorAvailabilityDetails {
     this.phoneNumber,
     this.nationality,
     this.availability,
+    this.about,
   });
 
   String id;
@@ -22,6 +23,7 @@ class TutorAvailabilityDetails {
   String phoneNumber;
   String nationality;
   List<Availability> availability;
+  String about;
 
   factory TutorAvailabilityDetails.fromJson(Map<String, dynamic> json) =>
       TutorAvailabilityDetails(

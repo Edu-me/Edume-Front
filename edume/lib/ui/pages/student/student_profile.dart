@@ -8,8 +8,6 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../shared/auth.dart';
-import '../login/login_desktop.dart';
-import '../login/login_mobile.dart';
 import 'package:http/http.dart' as http;
 
 class Student_Profile extends StatefulWidget {
@@ -461,7 +459,7 @@ Future<void> showUpdatePhoneDialog(BuildContext context, Student myinfo) async {
 
                   if (response.statusCode == 200) {
                     final snackBar = SnackBar(
-                      duration: const Duration(milliseconds: 20000),
+                      duration: const Duration(milliseconds:5000),
                       content: Text(
                           'Success! The Phone number is updated successfully'),
                       action: SnackBarAction(
@@ -488,7 +486,7 @@ Future<void> showUpdatePhoneDialog(BuildContext context, Student myinfo) async {
                     );
                   } else {
                     final snackBar = SnackBar(
-                      duration: const Duration(milliseconds: 20000),
+                      duration: const Duration(milliseconds: 5000),
                       content: Text('Failed! Please Enter valid data'),
                       action: SnackBarAction(
                         label: 'OK',
@@ -509,7 +507,7 @@ Future<void> showUpdatePhoneDialog(BuildContext context, Student myinfo) async {
                   }
                 } else {
                   final snackBar = SnackBar(
-                    duration: const Duration(milliseconds: 20000),
+                    duration: const Duration(milliseconds: 5000),
                     content: Text('Failed! Please Enter valid data'),
                     action: SnackBarAction(
                       label: 'OK',
