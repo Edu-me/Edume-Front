@@ -1,5 +1,6 @@
 import 'package:edume/models/student_tutor/student_request.dart';
 import 'package:edume/widgets/student_request.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -26,6 +27,31 @@ class _TrackRequestsState extends State<TrackRequests> {
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(75.0),
+        child: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/logo9.png',
+                    fit: BoxFit.contain,
+                    height: 40,
+                    width: 50,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.all(8.0), child: Text('Edume')),
+                ],
+              ),
+
+            ],
+          ),
+          backgroundColor: Colors.black,
+        ),
+      ),
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
@@ -38,7 +64,32 @@ class _TrackRequestsState extends State<TrackRequests> {
           padding: const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(children: requests),
+            child: requests.isEmpty ?
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 Padding(
+                   padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                   child: Text("No requests yet,\n you should start sending some!",
+                     style: TextStyle(fontSize: 40, color: Colors.white),
+                     textAlign: TextAlign.center,
+                   ),
+                 ),
+                 Padding(
+                   padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
+                   child: Container(
+                     child: new Image.asset(
+                       'assets/notfound.png',
+                       height: 280.0,
+                       width: 280,
+                       fit: BoxFit.contain,
+                     ),
+                   ),
+                 ),
+
+               ],
+            ): Column(children: requests),
           ),
         ),
       ),

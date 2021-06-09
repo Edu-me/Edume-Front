@@ -49,7 +49,6 @@ class StudentTutorServices {
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
-    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
       for (int i = 0; i < (jsonDecode(response.body)).length; i++) {
         ServiceTutorsResponse tutor = new ServiceTutorsResponse();

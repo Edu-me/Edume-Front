@@ -1,11 +1,11 @@
 import 'dart:convert';
-
+import 'package:edume/main.dart';
+import 'package:edume/models/student_tutor/tutor_details.dart';
 import 'package:edume/shared/auth.dart';
 import 'package:edume/shared/tutor-service.dart';
 import 'package:edume/shared/tutor_request.dart';
-import 'package:edume/ui/pages/login/login_desktop.dart';
-import 'package:edume/ui/pages/login/login_mobile.dart';
 import 'package:edume/ui/pages/tutor/tutor-services-ui.dart';
+import 'package:edume/ui/pages/tutor/tutor_profile.dart';
 import 'package:edume/ui/pages/tutor/tutor_requests.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -26,6 +26,7 @@ class tutor_main extends StatefulWidget {
 class _tutor_mainState extends State<tutor_main> {
   List<Tutor_Service> myservices = [];
   List<Tutor_Request> myrequests = [];
+  TutorAvailabilityDetails myinfo = new TutorAvailabilityDetails();
 
    Future<bool> GetServices() async {
      myservices=[];
@@ -38,8 +39,6 @@ class _tutor_mainState extends State<tutor_main> {
           'x-auth-token': shPr.getString("token"),
         },
     );
-    print(shPr.getString("id"));
-    print(response.body);
     if (response.statusCode == 200) {
       for (int i = 0; i < (jsonDecode(response.body)).length; i++) {
         Tutor_Service service = new Tutor_Service();
@@ -78,7 +77,6 @@ class _tutor_mainState extends State<tutor_main> {
           'Content-Type': 'application/json; charset=UTF-8',
           'x-auth-token': shPr.getString("token"),
         });
-    print((jsonDecode(response.body)));
     if (response.statusCode == 200) {
       for (int i = 0; i < (jsonDecode(response.body)).length; i++) {
         Tutor_Request request = new Tutor_Request();
@@ -115,6 +113,42 @@ class _tutor_mainState extends State<tutor_main> {
     } else
       return false;
   }
+  ///////////////////get my info
+
+  Future<bool> GetTeacherInfo() async {
+    final SharedPreferences shPr = await SharedPreferences.getInstance();
+    final String apiUrl = "http://localhost:3000/Edume/v1/system/services/"+shPr.getString("id");
+    final response = await http.get(apiUrl,
+        headers: <String, String> {
+          'Content-Type': 'application/json; charset=UTF-8',
+        });
+
+    if (response.statusCode == 200) {
+      myinfo.id = ((jsonDecode(response.body)))["_id"];
+      myinfo.name = ((jsonDecode(response.body)))["name"];
+      myinfo.phoneNumber = ((jsonDecode(response.body)))["phoneNumber"];
+      myinfo.email = ((jsonDecode(response.body)))["email"];
+      myinfo.nationality = ((jsonDecode(response.body)))["nationality"];
+      List<Availability> available = [];
+      for(int j=0; j<(jsonDecode(response.body))["availability"].length; j++){
+        Availability v = new Availability();
+        v.availabe = (jsonDecode(response.body))["availability"][j]["availabe"];
+        v.id = (jsonDecode(response.body))["availability"][j]["_id"];
+        v.day = (jsonDecode(response.body))["availability"][j]["day"];
+        available.add(v);
+      }
+      myinfo.availability = available;
+      print((jsonDecode(response.body)));
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+
+
+  }
+
   bool showReload = false;
   @override
   Widget build(BuildContext context) {
@@ -154,8 +188,8 @@ class _tutor_mainState extends State<tutor_main> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => ScreenTypeLayout.builder(
-                              mobile: (BuildContext context) => Login_Mobile('tutor'),
-                              desktop: (BuildContext context) => Login_Desktop('tutor'),
+                              mobile: (BuildContext context) => MyHomePage(title: 'Edume'),
+                              desktop: (BuildContext context) => MyHomePage(title: 'Edume'),
                             )),
                           );
                       },
@@ -185,7 +219,7 @@ class _tutor_mainState extends State<tutor_main> {
             image: DecorationImage(
                 image: AssetImage("assets/background.jpg"),
                 fit: BoxFit.cover)),
-        child: Row(
+         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -204,7 +238,19 @@ class _tutor_mainState extends State<tutor_main> {
                       elevation: 4.0,
                       icon: Icon(Icons.person, size: 100,),
                       color: Colors.orange.withOpacity(0.5),
-                      onPressed: () {},
+                      onPressed: () async {
+                        setState(() {
+                          showReload = true;
+                        });
+                        await GetTeacherInfo();
+                        setState(() {
+                          showReload = false;
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => tutor_profile(myinfo)),
+                        );
+                      },
                       label: Text("Profile",
                           style:
                           TextStyle(color: Colors.white, fontSize: 30.0)),
