@@ -6,7 +6,6 @@ import 'package:edume/models/sessions/online_session.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 class Sessions {
   Future<void> submitOnlineSession(OnlineSession onlineSession) async {
     Uri url = Uri.parse('http://localhost:3000/Edume/v1/session/online');

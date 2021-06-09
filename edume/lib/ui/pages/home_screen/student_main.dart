@@ -3,12 +3,14 @@ import 'package:edume/controllers/student_tutor/services_controller.dart';
 import 'package:edume/main.dart';
 import 'package:edume/models/student_tutor/service_model.dart';
 import 'package:edume/models/student_tutor/student_request.dart' as SD;
+import 'package:edume/networking/sessions.dart';
 import 'package:edume/networking/student_tutor/add_request_services.dart';
 import 'package:edume/shared/auth.dart';
 import 'package:edume/shared/tutor_request.dart';
 import 'package:edume/ui/pages/login/login_desktop.dart';
 import 'package:edume/ui/pages/login/login_mobile.dart';
 import 'package:edume/ui/pages/student/student_profile.dart';
+import 'package:edume/ui/pages/student_tutor/sessions.dart';
 import 'package:edume/ui/pages/student_tutor/set_tutor_selectors.dart';
 import 'package:edume/ui/pages/student_tutor/track_requests.dart';
 import 'package:edume/widgets/service_card.dart';
@@ -255,28 +257,26 @@ class _student_mainState extends State<student_main> {
                                 child: RaisedButton.icon(
                                   elevation: 4.0,
                                   icon: Icon(
-                                    Icons.track_changes,
+                                    Icons.date_range,
                                     size: 100,
                                     color: Colors.white,
                                   ),
                                   color: Colors.transparent,
                                   onPressed: () async {
-                                    setState(() {
-                                      showReload = true;
-                                    });
-                                    RequestServices requestServices =
-                                        new RequestServices();
-
-                                    List<SD.StudentRequest> requests =
-                                        await requestServices.getRequests();
-                                    setState(() {
-                                      showReload = false;
-                                    });
-                                    Get.to(TrackRequests(
-                                      requests: requests,
-                                    ));
+                                    Sessions sessionsServices = new Sessions();
+                                    List<List<dynamic>> sessions =
+                                        await sessionsServices.getSessions();
+                                    if (sessions != [] && sessions != null) {
+                                      Get.to(SessionPage(
+                                        offline: sessions[1],
+                                        online: sessions[0],
+                                        student: false,
+                                      ));
+                                    } else if (sessions == [])
+                                      Get.snackbar("There's no sessions Coming",
+                                          "Send some requests !");
                                   },
-                                  label: Text("Track Requests",
+                                  label: Text("Sessions",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 30.0)),
                                 ),
@@ -308,3 +308,15 @@ class _student_mainState extends State<student_main> {
         );
   }
 }
+/*                                  Sessions sessionsServices = new Sessions();
+                                  List<List<dynamic>> sessions =
+                                      await sessionsServices.getSessions();
+                                  if (sessions != [] && sessions != null) {
+                                    Get.to(SessionPage(
+                                      offline: sessions[1],
+                                      online: sessions[0],
+                                      student: false,
+                                    ));
+                                  } else if (sessions == [])
+                                    Get.snackbar("There's no sessions Coming",
+                                        "Accept some requests");*/
