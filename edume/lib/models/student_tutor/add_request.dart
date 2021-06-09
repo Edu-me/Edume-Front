@@ -1,31 +1,34 @@
 import 'dart:convert';
 
-AddRequestModel AddRequestModelFromJson(String str) => AddRequestModel.fromJson(json.decode(str));
+AddRequestModel AddRequestModelFromJson(String str) =>
+    AddRequestModel.fromJson(json.decode(str));
 
-String AddRequestModelToJson(AddRequestModel data) => json.encode(data.toJson());
+String AddRequestModelToJson(AddRequestModel data) =>
+    json.encode(data.toJson());
 
 class AddRequestModel {
-    AddRequestModel({
-        this.tutor,
-        this.student,
-        this.service,
-        this.sessionType,
-        this.sessionDuration,
-        this.studentsNum,
-        this.day,
-        this.message,
-    });
+  AddRequestModel({
+    this.tutor,
+    this.student,
+    this.service,
+    this.sessionType,
+    this.sessionDuration,
+    this.studentsNum,
+    this.day,
+    this.message,
+  });
 
-    String tutor;
-    String student;
-    String service;
-    String sessionType;
-    String sessionDuration;
-    String studentsNum;
-    String day;
-    String message;
+  String tutor;
+  String student;
+  String service;
+  String sessionType;
+  int sessionDuration;
+  int studentsNum;
+  String day;
+  String message;
 
-    factory AddRequestModel.fromJson(Map<String, dynamic> json) => AddRequestModel(
+  factory AddRequestModel.fromJson(Map<String, dynamic> json) =>
+      AddRequestModel(
         tutor: json["tutor"],
         student: json["student"],
         service: json["service"],
@@ -34,9 +37,9 @@ class AddRequestModel {
         studentsNum: json["studentsNum"],
         day: json["day"],
         message: json["message"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "tutor": tutor,
         "student": student,
         "service": service,
@@ -45,5 +48,5 @@ class AddRequestModel {
         "studentsNum": studentsNum,
         "day": day,
         "message": message,
-    };
+      };
 }

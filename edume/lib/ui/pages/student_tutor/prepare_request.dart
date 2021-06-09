@@ -300,10 +300,8 @@ class _PrepareRequestState extends State<PrepareRequest> {
                                     if (widget.edit) {
                                       EditRequest editRequest = new EditRequest(
                                           day: day,
-                                          sessionDuration:
-                                              (duration * 60).toString(),
-                                          studentsNum:
-                                              studentsNumber.toString());
+                                          sessionDuration: (duration),
+                                          studentsNum: studentsNumber);
                                       await sendRequestController.editRequest(
                                           editRequest, widget.requestID);
                                     } else {
@@ -315,14 +313,12 @@ class _PrepareRequestState extends State<PrepareRequest> {
                                               day: day,
                                               message: message,
                                               service: widget.serviceId,
-                                              sessionDuration:
-                                                  (duration * 60).toString(),
+                                              sessionDuration: (duration),
                                               sessionType: widget.offline
                                                   ? "offline"
                                                   : "online",
                                               student: studentID,
-                                              studentsNum:
-                                                  studentsNumber.toString(),
+                                              studentsNum: studentsNumber,
                                               tutor: widget.tutorId);
                                       //send request
 

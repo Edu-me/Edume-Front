@@ -12,8 +12,8 @@ class EditRequest {
     this.day,
   });
 
-  String sessionDuration;
-  String studentsNum;
+  int sessionDuration;
+  int studentsNum;
   String day;
 
   factory EditRequest.fromJson(Map<String, dynamic> json) => EditRequest(
