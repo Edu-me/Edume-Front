@@ -257,6 +257,34 @@ class _student_mainState extends State<student_main> {
                                 child: RaisedButton.icon(
                                   elevation: 4.0,
                                   icon: Icon(
+                                    Icons.track_changes,
+                                    size: 100,
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.transparent,
+                                  onPressed: () async {
+                                    RequestServices requestServices =
+                                        new RequestServices();
+
+                                    List<SD.StudentRequest> requests =
+                                        await requestServices.getRequests();
+                                    Get.to(TrackRequests(
+                                      requests: requests,
+                                    ));
+                                  },
+                                  label: Text("Track Requests",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30.0)),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: RaisedButton.icon(
+                                  elevation: 4.0,
+                                  icon: Icon(
                                     Icons.date_range,
                                     size: 100,
                                     color: Colors.white,
