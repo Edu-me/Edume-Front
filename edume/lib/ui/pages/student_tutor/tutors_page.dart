@@ -36,11 +36,11 @@ class _TutorPageState extends State<TutorPage> {
   Widget build(BuildContext context) {
     var deviceType = getDeviceType(MediaQuery.of(context).size);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.cyan.shade900,
-        title: widget.offline ? Text("Offline Tutors") : Text("Online Tutors"),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.cyan.shade900,
+      //   title: widget.offline ? Text("Offline Tutors") : Text("Online Tutors"),
+      //   centerTitle: true,
+      // ),
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(

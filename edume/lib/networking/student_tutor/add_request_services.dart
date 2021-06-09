@@ -59,10 +59,12 @@ class RequestServices {
         body: jsonEncode(requestModel.toJson()));
     print(response.body);
     if (response.statusCode == 200) {
-      Get.snackbar("Session Request Sent !", "");
+      Get.snackbar("Session Request Sent !", "",
+          duration: Duration(seconds: 3));
       return true;
     } else {
-      Get.snackbar("Something went wrong", "Try sending the request again");
+      Get.snackbar("Something went wrong", "Try sending the request again",
+          duration: Duration(seconds: 3));
       return false;
     }
   }
@@ -149,10 +151,12 @@ class RequestServices {
         body: jsonEncode(requestModel.toJson()));
     print(response.body);
     if (response.statusCode == 200) {
-      Get.snackbar("Session Request Edited Successfully !", "");
+      Get.snackbar("Session Request Edited Successfully !", "",
+          duration: Duration(seconds: 3));
       return true;
     } else {
-      Get.snackbar("Something went wrong", "Try sending the request again");
+      Get.snackbar("Something went wrong", "Try sending the request again",
+          duration: Duration(seconds: 3));
       return false;
     }
   }

@@ -8,7 +8,9 @@ class GetTutorsController extends GetxController {
   StudentTutorServices studentTutorServices = new StudentTutorServices();
   Future<List<ServiceTutorsResponse>> getTutors(
       ServiceTutorsRequest serviceTutorsRequest) async {
+    print(serviceTutorsRequest.toJson());
     tutors = await studentTutorServices.getTutors(serviceTutorsRequest);
+    print(tutors);
     return tutors;
   }
 }
