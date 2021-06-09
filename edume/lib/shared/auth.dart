@@ -22,7 +22,6 @@ class Auth {
 
   static Future<List<String>> Student_signUp(String email, String password,String name, String phone, String confirm) async {
     final String apiUrl = "http://localhost:3000/Edume/v1/auth/signup/student";
-    print("here1");
     final response = await http.post(apiUrl,
         headers: <String, String> {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -33,8 +32,7 @@ class Auth {
           "confirmPassword":confirm,
           "phoneNumber": phone
         }));
-    print("here2");
-
+    print((jsonDecode(response.body)));
     return [response.body,response.statusCode.toString()];
   }
 

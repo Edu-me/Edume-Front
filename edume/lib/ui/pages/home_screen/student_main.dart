@@ -1,17 +1,37 @@
+import 'dart:convert';
 import 'package:edume/controllers/student_tutor/services_controller.dart';
+import 'package:edume/main.dart';
 import 'package:edume/models/student_tutor/service_model.dart';
 import 'package:edume/models/student_tutor/student_request.dart' as SD;
 import 'package:edume/networking/student_tutor/add_request_services.dart';
+import 'package:edume/shared/auth.dart';
+import 'package:edume/shared/tutor_request.dart';
+import 'package:edume/ui/pages/login/login_desktop.dart';
+import 'package:edume/ui/pages/login/login_mobile.dart';
+import 'package:edume/ui/pages/student/student_profile.dart';
 import 'package:edume/ui/pages/student_tutor/set_tutor_selectors.dart';
 import 'package:edume/ui/pages/student_tutor/track_requests.dart';
 import 'package:edume/widgets/service_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 ServiceController serviceController = Get.put(ServiceController());
 
-class student_main extends StatelessWidget {
+class student_main extends StatefulWidget {
+  @override
+  _student_mainState createState() => _student_mainState();
+}
+
+class _student_mainState extends State<student_main> {
   List<ServiceCard> servicesCards = [];
+  Student info = new Student();
+  bool showReload = false;
+
   Future<List<ServiceCard>> getServices(bool offline) async {
     List<Service> services = await serviceController.getServices();
 
@@ -27,147 +47,264 @@ class student_main extends StatelessWidget {
     return servicesCards;
   }
 
+  /////////////get student
+  Future<bool> GetStudentInfo() async {
+    final SharedPreferences shPr = await SharedPreferences.getInstance();
+    final String apiUrl =
+        "http://localhost:3000/Edume/v1/student/" + shPr.getString("id");
+    final response = await http.get(apiUrl, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+
+    if (response.statusCode == 200) {
+      info.sId = ((jsonDecode(response.body)))["_id"];
+      info.name = ((jsonDecode(response.body)))["name"];
+      info.phoneNumber = ((jsonDecode(response.body)))["phoneNumber"];
+      info.email = ((jsonDecode(response.body)))["email"];
+
+      print((jsonDecode(response.body)));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(75.0),
-        child: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Image.asset(
-                'assets/logo9.png',
-                fit: BoxFit.contain,
-                height: 40,
-                width: 50,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0), child: Text('Edume'))
-            ],
-          ),
-          backgroundColor: Colors.black,
-        ),
-      ),
-      /////////////////
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/background.jpg"), fit: BoxFit.cover)),
-        child: Row(
-          children: [
-            SizedBox(width: 200.0, height: 100.0),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(75.0),
+          child: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Welcome, ",
-                    style: TextStyle(fontSize: 30, color: Colors.white)),
-                Text("Who are You looking for today? ",
-                    style: TextStyle(fontSize: 60, color: Colors.white)),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: RaisedButton.icon(
-                      elevation: 4.0,
-                      icon: Image.asset(
-                        'assets/tutor.png',
-                        width: 100,
-                        height: 80,
-                      ),
-                      color: Colors.transparent,
-                      onPressed: () async {
-                        List<ServiceCard> services = await getServices(true);
-                        Get.to(SetTutorSelectors(
-                          offline: true,
-                          all_services: services,
-                        ));
-                      },
-                      label: Text("Tutors",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 30.0)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset(
+                      'assets/logo9.png',
+                      fit: BoxFit.contain,
+                      height: 40,
+                      width: 50,
                     ),
-                  ),
+                    Container(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Edume'))
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.fromLTRB(0, 12, 20, 0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(40),
                     child: RaisedButton.icon(
-                        elevation: 4.0,
-                        icon: Image.asset(
-                          'assets/online tutor.jpg',
-                          width: 100,
-                          height: 80,
+                        icon: Icon(
+                          Icons.logout,
+                          size: 20,
                         ),
-                        color: Colors.transparent,
-                        onPressed: () async {
-                          List<ServiceCard> services = await getServices(false);
-                          Get.to(SetTutorSelectors(
-                            offline: false,
-                            all_services: services,
-                          ));
+                        color: Colors.orange,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Auth.logout();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ScreenTypeLayout.builder(
+                                      mobile: (BuildContext context) =>
+                                          MyHomePage(title: 'Edume'),
+                                      desktop: (BuildContext context) =>
+                                          MyHomePage(title: 'Edume'),
+                                    )),
+                          );
                         },
-                        label: Text("Online Tutors",
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 30.0))),
-                  ),
-                ),
-                // ignore: deprecated_member_use
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: RaisedButton.icon(
-                        elevation: 4.0,
-                        icon: Image.asset(
-                          'assets/webinars.jpg',
-                          width: 100,
-                          height: 80,
-                        ),
-                        color: Colors.transparent,
-                        onPressed: () {},
-                        label: Text("Webinars",
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 30.0))),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: RaisedButton.icon(
-                      elevation: 4.0,
-                      icon: Icon(
-                        Icons.track_changes,
-                        size: 60,
-                        color: Colors.white,
-                      ),
-                      color: Colors.transparent,
-                      onPressed: () async {
-                        RequestServices requestServices = new RequestServices();
-
-                        List<SD.StudentRequest> requests =
-                            await requestServices.getRequests();
-                        Get.to(TrackRequests(
-                          requests: requests,
-                        ));
-                      },
-                      label: Text("Track Requests",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 30.0)),
-                    ),
+                        label: Text("Logout",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 21))),
                   ),
                 ),
               ],
             ),
-          ],
+            backgroundColor: Colors.black,
+          ),
         ),
-      ),
+        /////////////////
+        body: Builder(
+          builder: (context) {
+            return ModalProgressHUD(
+              inAsyncCall: showReload,
+              opacity: 0,
+              progressIndicator: CircularProgressIndicator(),
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/background.jpg"),
+                        fit: BoxFit.cover)),
+                child: SingleChildScrollView(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 200.0, height: 100.0),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(60, 60, 0, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: RaisedButton.icon(
+                                  elevation: 4.0,
+                                  icon: Icon(
+                                    Icons.home_repair_service,
+                                    size: 100,
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.transparent,
+                                  onPressed: () async {
+                                    setState(() {
+                                      showReload = true;
+                                    });
+                                    List<ServiceCard> services =
+                                        await getServices(true);
+                                    setState(() {
+                                      showReload = false;
+                                    });
+                                    Get.to(SetTutorSelectors(
+                                      offline: true,
+                                      all_services: services,
+                                    ));
+                                  },
+                                  label: Text("Tutors",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30.0)),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: RaisedButton.icon(
+                                    elevation: 4.0,
+                                    icon: Icon(
+                                      Icons.wifi_outlined,
+                                      size: 100,
+                                      color: Colors.white,
+                                    ),
+                                    color: Colors.transparent,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showReload = true;
+                                      });
+                                      List<ServiceCard> services =
+                                          await getServices(false);
+                                      setState(() {
+                                        showReload = false;
+                                      });
+                                      Get.to(SetTutorSelectors(
+                                        offline: false,
+                                        all_services: services,
+                                      ));
+                                    },
+                                    label: Text("Online Tutors",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30.0))),
+                              ),
+                            ),
+                            // ignore: deprecated_member_use
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: RaisedButton.icon(
+                                    elevation: 4.0,
+                                    icon: Icon(
+                                      Icons.person,
+                                      size: 100,
+                                      color: Colors.white,
+                                    ),
+                                    color: Colors.transparent,
+                                    onPressed: () async {
+                                      setState(() {
+                                        showReload = true;
+                                      });
+                                      await GetStudentInfo();
+                                      setState(() {
+                                        showReload = false;
+                                      });
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Student_Profile(info)),
+                                      );
+                                    },
+                                    label: Text("Profile",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 30.0))),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: RaisedButton.icon(
+                                  elevation: 4.0,
+                                  icon: Icon(
+                                    Icons.track_changes,
+                                    size: 100,
+                                    color: Colors.white,
+                                  ),
+                                  color: Colors.transparent,
+                                  onPressed: () async {
+                                    setState(() {
+                                      showReload = true;
+                                    });
+                                    RequestServices requestServices =
+                                        new RequestServices();
 
-      /////////////////
-    );
+                                    List<SD.StudentRequest> requests =
+                                        await requestServices.getRequests();
+                                    setState(() {
+                                      showReload = false;
+                                    });
+                                    Get.to(TrackRequests(
+                                      requests: requests,
+                                    ));
+                                  },
+                                  label: Text("Track Requests",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30.0)),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(160.0),
+                          child: Column(
+                            children: [
+                              Text("Who are You looking for today? ",
+                                  style: TextStyle(
+                                      fontSize: 60, color: Colors.white)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }, /////////////////
+        )
+        /////////////////
+        );
   }
 }
