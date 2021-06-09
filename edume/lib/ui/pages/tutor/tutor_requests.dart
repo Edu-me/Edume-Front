@@ -1,4 +1,7 @@
 import 'dart:html';
+import 'package:edume/models/sessions/offline_session.dart';
+import 'package:edume/models/sessions/online_session.dart';
+import 'package:edume/networking/sessions.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'dart:convert';
 import 'package:date_utils/date_utils.dart';
@@ -501,10 +504,43 @@ class _TutorRequestCardState extends State<TutorRequestCard> {
                                                                       }));
                                                               if (response
                                                                       .statusCode ==
-                                                                  200)
-                                                                Get.snackbar(
-                                                                    "Request has been accepted with time",
-                                                                    "Check your sessions to see the updates");
+                                                                  200) {
+                                                                OfflineSession offlineSession = new OfflineSession(
+                                                                    day: dateV.day.toString().length < 2
+                                                                        ? "0${dateV.day.toString()}"
+                                                                        : dateV.day
+                                                                            .toString(),
+                                                                    hour: dateV.hour.toString().length < 2
+                                                                        ? "0${dateV.hour.toString()}"
+                                                                        : dateV
+                                                                            .hour
+                                                                            .toString(),
+                                                                    month: dateV.month.toString().length < 2
+                                                                        ? "0${dateV.month.toString()}"
+                                                                        : dateV
+                                                                            .month
+                                                                            .toString(),
+                                                                    minute: dateV.minute.toString().length < 2
+                                                                        ? "0${dateV.minute.toString()}"
+                                                                        : dateV
+                                                                            .minute
+                                                                            .toString(),
+                                                                    service: widget
+                                                                        .TR
+                                                                        .service
+                                                                        .sId,
+                                                                    sessionDuration:
+                                                                        widget.TR.sessionDuration * 60,
+                                                                    student: widget.TR.student.sId,
+                                                                    studentsNum: widget.TR.studentsNum,
+                                                                    location: location);
+                                                                Sessions
+                                                                    sessionServices =
+                                                                    new Sessions();
+                                                                await sessionServices
+                                                                    .submitOfflineSession(
+                                                                        offlineSession);
+                                                              }
                                                             },
                                                           ),
                                                         ],
@@ -524,12 +560,53 @@ class _TutorRequestCardState extends State<TutorRequestCard> {
                                                     body: jsonEncode({
                                                       "status": "accepted",
                                                     }));
-                                                if (response.statusCode == 200)
-                                                  Get.snackbar(
-                                                      "Request has been accepted with time",
-                                                      "Check your sessions for the meeting link");
-
-                                                ///------------------------ send request to online session
+                                                if (response.statusCode ==
+                                                    200) {
+                                                  ///------------------------ send request to online session
+                                                  OnlineSession onlineSession =
+                                                      new OnlineSession(
+                                                    day: dateV.day
+                                                                .toString()
+                                                                .length <
+                                                            2
+                                                        ? "0${dateV.day.toString()}"
+                                                        : dateV.day.toString(),
+                                                    hour: dateV.hour
+                                                                .toString()
+                                                                .length <
+                                                            2
+                                                        ? "0${dateV.hour.toString()}"
+                                                        : dateV.hour.toString(),
+                                                    month: dateV.month
+                                                                .toString()
+                                                                .length <
+                                                            2
+                                                        ? "0${dateV.month.toString()}"
+                                                        : dateV.month
+                                                            .toString(),
+                                                    minute: dateV.minute
+                                                                .toString()
+                                                                .length <
+                                                            2
+                                                        ? "0${dateV.minute.toString()}"
+                                                        : dateV.minute
+                                                            .toString(),
+                                                    service:
+                                                        widget.TR.service.sId,
+                                                    sessionDuration: widget.TR
+                                                            .sessionDuration *
+                                                        60,
+                                                    student:
+                                                        widget.TR.student.sId,
+                                                    studentsNum:
+                                                        widget.TR.studentsNum,
+                                                  );
+                                                  Sessions sessionServices =
+                                                      new Sessions();
+                                                  await sessionServices
+                                                      .submitOnlineSession(
+                                                          onlineSession);
+                                                }
                                               }
                                             }, locale: LocaleType.en);
                                           }),
