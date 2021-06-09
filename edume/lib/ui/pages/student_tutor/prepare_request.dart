@@ -49,27 +49,27 @@ class _PrepareRequestState extends State<PrepareRequest> {
     else {
       if (widget.edit) {
         day = widget.day;
-        duration = widget.duration;
+        duration = widget.duration ~/ 60;
         studentsNumber = widget.studentsNumber;
         message = widget.message;
         messageController = TextEditingController(text: widget.message);
       } else {
         day = widget.days[0];
-        for (int i = 0; i < widget.days.length; i++) {
-          DropdownMenuItem dayItem = new DropdownMenuItem(
-            child: Text(
-              widget.days[i],
-              style: TextStyle(color: Colors.orange, fontSize: 15),
-            ),
-            onTap: () {
-              setState(() {
-                day = widget.days[i];
-              });
-            },
-            value: widget.days[i],
-          );
-          daysItems.add(dayItem);
-        }
+      }
+      for (int i = 0; i < widget.days.length; i++) {
+        DropdownMenuItem dayItem = new DropdownMenuItem(
+          child: Text(
+            widget.days[i],
+            style: TextStyle(color: Colors.orange, fontSize: 15),
+          ),
+          onTap: () {
+            setState(() {
+              day = widget.days[i];
+            });
+          },
+          value: widget.days[i],
+        );
+        daysItems.add(dayItem);
       }
     }
   }
@@ -247,6 +247,7 @@ class _PrepareRequestState extends State<PrepareRequest> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: TextField(
+                              enabled: !widget.edit,
                               controller: messageController,
                               onChanged: (value) {
                                 setState(() {
@@ -299,7 +300,8 @@ class _PrepareRequestState extends State<PrepareRequest> {
                                     if (widget.edit) {
                                       EditRequest editRequest = new EditRequest(
                                           day: day,
-                                          sessionDuration: duration.toString(),
+                                          sessionDuration:
+                                              (duration * 60).toString(),
                                           studentsNum:
                                               studentsNumber.toString());
                                       await sendRequestController.editRequest(
@@ -314,7 +316,7 @@ class _PrepareRequestState extends State<PrepareRequest> {
                                               message: message,
                                               service: widget.serviceId,
                                               sessionDuration:
-                                                  duration.toString(),
+                                                  (duration * 60).toString(),
                                               sessionType: widget.offline
                                                   ? "offline"
                                                   : "online",

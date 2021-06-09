@@ -112,10 +112,10 @@ class _StudentRequestCardState extends State<StudentRequestCard> {
                                       leading: Icon(Icons.timer_sharp,
                                           color: Colors.orange),
                                       title: Text("Duration"),
-                                      subtitle: Text(
-                                          widget.SR.sessionDuration.toString() +
-                                              " " +
-                                              "Hours"),
+                                      subtitle: Text((widget.SR.sessionDuration)
+                                              .toString() +
+                                          " " +
+                                          "Hours"),
                                     ),
                                   ),
                                 ),
@@ -256,6 +256,7 @@ class _StudentRequestCardState extends State<StudentRequestCard> {
                                         i++)
                                       availableDays.add(
                                           widget.SR.tutor.availability[i].day);
+                                    print(availableDays);
                                     Get.to(PrepareRequest(
                                       offline: (widget.SR.status == "offline")
                                           ? true
